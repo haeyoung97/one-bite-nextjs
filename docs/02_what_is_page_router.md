@@ -75,3 +75,57 @@
 - constructor, render, 같은 일부 클래스 구성 요소 메서드 shouldComponentUpdate( 전체 목록 참조 )
 
 > 함수가 순수한 경우 순수한 함수는 매번 동일한 결과를 생성하기 때문에 함수를 두 번 실행해도 동작이 변경되지 않습니다. 그러나 함수가 순수하지 않은 경우(예를 들어, 수신하는 데이터를 변경하는 경우) 그 순수하지 않은 코드를 두 번 실행하는 것은 눈에 띄는 경향이 있습니다(그것이 함수를 순수하지 않게 만듭니다!) 이렇게 하면 버그를 조기에 발견하고 수정하는 데 도움이 됩니다.
+
+### Dynamic Routes
+
+#### useRouter 사용 방법
+
+- next.js 의 v4에서는 다음과 같이 `useRouter`를 import 하여 사용할 수 있다.
+
+  ```typescript
+  import { useRouter } from "next/router";
+  ```
+
+- next.js 의 v5에서는 다음과 같이 `useRouter`를 import 하여 사용할 수 있다.
+
+  ```typescript
+  import { useRouter } from "next/navigation";
+  ```
+
+- query string 값은 다음과 같이 얻어올 수 있다.
+
+  ```typescript
+  export default function Page() {
+    const router = useRouter();
+    const { q } = router.query;
+
+    return <h1>Search {q}</h1>;
+  }
+  ```
+
+#### Dynamic Segments
+
+[id].tsx
+
+- router의 query로 값을 얻어올 수 있다.
+
+  ```typescript
+  const router = useRouter();
+  const { id } = router.query;
+  ```
+
+#### Catch-all Segments
+
+[...id].tsx
+
+- 모든 구간에 대응하는 라우더로 설정할 수 있다.
+  - 즉, `pages/book/[...id].tsx`로 적용 시 `~/book/12/34/56/78` 과 같이 router에 접근할 수 있다.
+  - query의 값은 배열 형태로 전달 된다.
+- 단. `index.tsx` (`~/book`)는 대응해주지 못한다.
+
+#### Optional Catch-all Segments
+
+[[...id]].tsx
+
+- 모든 구간에 대응 + `index.tsx` 대응 하는 라우터로 설정할 수 있다.
+  - 즉, `pages/book/[[...id]].tsx`로 적용 시 `~/book/12/34/56/78` 및 `~/book` 모두 router에 접근할 수 있다.
