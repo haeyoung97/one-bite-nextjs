@@ -35,6 +35,16 @@ import Link from "next/link";
 
 이를 통해, 초기 접속 속도도 유지하면서, 수화(hydration) 시간도 유지할 수 있다.
 
+> Pre-fetching 을 제한하려면 어떻게 해야 할까?
+
+```typescript
+<Link href="/search" prefetch={false}>
+  search
+</Link>
+```
+
+위와 같이 `prefetch={false}` props 를 추가하면 pre-fetching 를 제한할 수 있다.
+
 ### API Routes
 
 NextJS app 내에서 API를 만들 수 있게 해주는 기능이다. `pages/api` 폴더 내의 모든 파일은 `/api/*`에 대응되며, page가 아닌 API 엔드포인트로 취급된다. 즉, 웹 페이지를 정의하는 것이 아니다.
