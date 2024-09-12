@@ -1,10 +1,13 @@
-import style from "./index.module.css";
+import SearchableLayout from "@/components/SearchableLayout";
+import { ReactNode } from "react";
 
 export default function Home() {
-  return (
-    <>
-      <h1 className={style.h1}>ONEBITE CINEMA</h1>
-      <h2 className={style.h2}>H2</h2>
-    </>
-  );
+  return <></>;
 }
+
+/**
+ * @description javascript 의 모든 함수는 객체이므로 메소드를 추가할 수 있다.
+ */
+Home.getLayout = (page: ReactNode) => {
+  return <SearchableLayout>{page}</SearchableLayout>;
+};
