@@ -1,21 +1,36 @@
 import BookItem from "@/components/BookItem";
 import SearchableLayout from "@/components/SearchableLayout";
-import books from "@/mock/books.json";
+import fetchBooks from "@/lib/fetchBooks";
+import fetchRandomBooks from "@/lib/fetchRandomBooks";
+import { InferGetServerSidePropsType } from "next";
 import { ReactNode } from "react";
 import style from "./index.module.css";
 
-export default function Home() {
+export const getServerSideProps = async () => {
+  // 병렬 요청.
+  const [allBooks, recoBooks] = await Promise.all([
+    fetchBooks(),
+    fetchRandomBooks(),
+  ]);
+
+  return { props: { allBooks, recoBooks } };
+};
+
+export default function Home({
+  allBooks,
+  recoBooks,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <div className={style.container}>
       <section>
         <h3>지금 추천하는 도서</h3>
-        {books.map((book) => (
+        {recoBooks.map((book) => (
           <BookItem key={book.id} {...book} />
         ))}
       </section>
       <section>
         <h3>등록된 모든 도서</h3>
-        {books.map((book) => (
+        {allBooks.map((book) => (
           <BookItem key={book.id} {...book} />
         ))}
       </section>
