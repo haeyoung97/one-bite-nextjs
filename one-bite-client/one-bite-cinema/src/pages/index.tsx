@@ -2,11 +2,12 @@ import MovieItem from "@/components/MovieItem";
 import SearchableLayout from "@/components/SearchableLayout";
 import fetchMovies from "@/lib/fetchMovies";
 import fetchRandomMovies from "@/lib/fetchRandomMovies";
-import { InferGetServerSidePropsType } from "next";
+import { InferGetStaticPropsType } from "next";
 import { ReactNode } from "react";
 import style from "./index.module.css";
 
-export const getServerSideProps = async () => {
+// 자주 변경되는 데이터가 아니기 때문에 SSG 적용.
+export const getStaticProps = async () => {
   const [allMovies, recoMovies] = await Promise.all([
     fetchMovies(),
     fetchRandomMovies(),
@@ -18,7 +19,7 @@ export const getServerSideProps = async () => {
 export default function Home({
   allMovies,
   recoMovies,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <div className={style.container}>
       <section>

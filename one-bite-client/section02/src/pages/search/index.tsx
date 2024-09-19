@@ -10,13 +10,13 @@ export default function Page() {
   const router = useRouter();
   const q = router.query.q;
 
-  const fetchSEarchResult = async () => {
+  const fetchSearchResult = async () => {
     const data = await fetchBooks(q as string);
     setBooks(data);
   };
 
   useEffect(() => {
-    if (q) fetchSEarchResult();
+    if (q) fetchSearchResult();
   }, [q]);
 
   return (
