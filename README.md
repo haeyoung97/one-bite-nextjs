@@ -7,7 +7,12 @@
 - [05 Static site generation](./docs/05_static_site_generation.md)
 - [06 Incremental static regeneration](./docs/06_incremental_static_regeneration.md)
 
-### Deploy onebite-books with vercel
+### Deploy onebite-books using page router with vercel
 
 - server: https://one-bite-server.vercel.app
 - client: https://onebite-books-page-nine.vercel.app
+
+### Deploy onebite-cinema using page router with vercel
+
+- server: https://onebite-cinema-api-xi.vercel.app
+- client: https://onebite-cinema-page-nine.vercel.app
