@@ -6,6 +6,7 @@
 - [04 Server side rendering](./docs/04_server_side_rendering.md)
 - [05 Static site generation](./docs/05_static_site_generation.md)
 - [06 Incremental static regeneration](./docs/06_incremental_static_regeneration.md)
+- [07 What is app router](./docs/07_what_is_app_router.md)
 
 ### Deploy onebite-books using page router with vercel
 
