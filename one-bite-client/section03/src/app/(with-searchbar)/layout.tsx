@@ -1,3 +1,5 @@
+import Searchbar from "@/components/Searchbar";
+
 export default function Layout({
   children,
 }: Readonly<{
@@ -5,7 +7,7 @@ export default function Layout({
 }>) {
   return (
     <div>
-      <div>임시 서치바</div>
+      <Searchbar />
       {children}
     </div>
   );
