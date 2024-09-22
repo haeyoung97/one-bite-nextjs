@@ -3,5 +3,5 @@ export default function Page({
 }: {
   searchParams: { q?: string };
 }) {
-  return <div>Search 페이지 {searchParams.q}</div>;
+  return <div>Search: {searchParams.q}</div>;
 }
