@@ -2,11 +2,15 @@ import { BookData } from "@/types";
 import { notFound } from "next/navigation";
 import style from "./page.module.css";
 
-// generateStaticParams 에서 설정한 파라미터 이외의 값은 dynamic 으로 처리하지 않는다.
+/**
+ * generateStaticParams 에서 설정한 파라미터 이외의 값은 dynamic 으로 처리하지 않는다.
+ */
 // export const dynamicParams = false;
 
-// 빌드 타임에 미리 렌더링을 완료할 수 있으며, full route cache를 적용할 수 있다.
-// Page Router의 getStaticPaths 와 동일한 역할을 수행한다.
+/**
+ * 빌드 타임에 미리 렌더링을 완료할 수 있으며, full route cache를 적용할 수 있다.
+ * Page Router의 getStaticPaths 와 동일한 역할을 수행한다.
+ */
 export function generateStaticParams() {
   return [{ id: "1" }, { id: "2" }, { id: "3" }];
 }

@@ -70,3 +70,32 @@ if (!response.ok) {
 ```
 
 즉, `generateStaticParams` 에서 정의되지 않은 라우터로 접속 요청을 할 경우, status가 404로 설정되어 `Not Found` 페이지로 이동된다.
+
+### Route Segment
+
+Next.js 에서는 라우트를 표현하는 폴더인 경우에 라우트 세그먼트(Route Segment)라고 부른다.
+상황에 맞는 UI를 정의할 때 쓰는 파일명, 함수명, 변수명 등이 정해져있다.
+
+그 중에서, `dynamic` 변수에 대해서 알아보자.
+
+```typescript
+export const dynamic = "";
+```
+
+`dynamic` 변수는 특정 페이지의 유형을 강제로 static, dynamic 페이지로 설정한다.
+
+1. auto: 기본 값, 아무것도 강제하지 않는다.
+2. force-dynamic: 페이지를 강제로 Dynamic 페이지로 설정한다.
+3. force-static: 페이지를 강제로 Static 페이지로 설정한다.
+   - searchParams 등은 모두 undefined 로 적용된다.
+4. cache 설정도 캐싱을 하도록 적용된다.
+5. error: 페이지를 강제로 Static 페이지로 적용한다. 강제 적용이 불가능할 경우, build error 를 발생시킨다.
+
+`dynamic` 변수의 경우, 특별한 상황이 아니라면 dynamic 변수를 정의하는 것을 권장하지 않는다.
+
+### 클라이언트 라우터 캐시
+
+- 브라우저에 저장되는 캐시로, 페이지 이동을 효율적으로 진행하기 위해 페이지의 일부 데이터를 보관한다.
+- 즉, 페이지 간을 이동할 때 발생하는 서버 요청을 줄이기 위해 클라이언트 측에서 캐시하는 기능이다.
+- 클라이언트 측에 `라우터 캐시` 영역을 두고, 각 페이지의 레이아웃 정보를 담은 RSC Payload 의 값을 그대로 사용할 수 있도록 설정한다.
+- 기본적으로 '새로고침'이 되면 동작하지 않는다. 즉, 캐시된 값을 정리한다.
