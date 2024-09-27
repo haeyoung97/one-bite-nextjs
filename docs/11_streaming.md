@@ -39,3 +39,78 @@ export default function Loading() {
    - 별도의 컴포넌트에도 적용하고 싶다면, react 의 `<Suspense>` 컴포넌트를 이용해야 한다.
 4. 경로 변경이 아닌, 쿼리스트링이 변경될 때는 스트리밍 트리거가 적용되지 않는다.
    - 이 상황에도 적용하고 싶다면, react 의 `<Suspense>` 컴포넌트를 이용해야 한다.
+
+> 쿼리 스트링이 변경될 때에도 적용하는 방법을 알아보자.
+
+```typescript
+<Suspense key={searchParams.q || ""} fallback={<div>Loading...</div>}>
+  <SearchResult q={searchParams.q || ""} />
+</Suspense>
+```
+
+`Suspense` 는 최초 한번만 렌더링 된다. 이 때, key 값이 달라지면 새로운 컴포넌트로 인식하게 된다.
+즉, key 값을 적용을 한다면 react는 컴포넌트 렌더링을 새롭게 진행한다.\
+
+추가적으로 `Suspense` 를 적용하기 위해서는 dynamic 페이지로 변경해주어야 한다. Static 페이지의 경우 빌드 타임에서 미리 불러오기 때문에 비동기 작업이 없으며, streaming이 동작하지 않는다.
+
+이는 `dynamic` 변수를 통해 적용할 수 있다. (`export const dynamic = "force-dynamic";`)
+
+### 에러 핸들링
+
+에러를 핸들링하기 위해서는 `error.tsx` 파일을 적용하고자 하는 경로에 추가하면 된다. 에러 컴포넌트의 props 로는 `error`, `reset` 등의 값이 있다.
+
+이는 `layout.tsx` 의 적용범위와 동일하게 동작한다. 즉, 중첩된 라우트 안에서 우아하게 런타임 에러를 핸들링할 수 있게 도와준다.
+
+이 에러 핸들링을 위한 컴포넌트는 `클라이언트 컴포넌트` 로 정의되어야 한다. 이는 클라이언트 환경이던 서버 환경이던 에러를 핸들링할 수 있어야 하기 때문이다.
+
+다음의 예시 코드를 보자.
+
+```typescript
+"use client";
+import { useRouter } from "next/navigation";
+import { startTransition } from "react";
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}) {
+  const router = useRouter();
+  return (
+    <div>
+      <h3>오류가 발생했습니다.</h3>
+      <button
+        onClick={() => {
+          startTransition(() => {
+            router.refresh();
+            reset();
+          });
+        }}
+      >
+        다시 시도
+      </button>
+    </div>
+  );
+}
+```
+
+특히, `onClick` 함수를 보자.
+
+`reset()` 함수의 경우, 에러 상태를 초기화 하고 컴포넌트를 다시 렌더링하도록 동작한다. 하지만, 서버 측에서 실행되는 서버 컴포넌트의 경우, 다시 시도를 하더라도 서버에 캐시된 정보를 보이게 한다. 그래서 `window.location.reload()` 와 같이 화면을 새로 고침하는 로직을 사용해야 한다. 이를 우아하게 처리하기 위해서 `useRouter` 를 사용할 수 있다.
+
+`useRouter`의 `refresh` 함수는 현재 페이지에 필요한 서버 컴포넌트를 Next 서버에 다시 실행해달라고 요청하는 행위를 한다. 또한, 페이지 전체를 새로고침하지 않고 현재 상태를 유지하면서 데이터만 업데이트하고 싶을 때 사용할 수 있다.
+
+#### startTransition 함수
+
+```typescript
+startTransition(scope);
+```
+
+`scope: () => void` : scope 함수 내부에서는 1개 이상의 set 함수(useState의 반환 값 중 set 함수)가 호출되어야 한다. scope 함수는 즉시 실행되며, 내부에서 호출한 상태 업데이트들은 모두 Transition updates로 처리됩니다. 즉, UI를 non-blocking하며 상태를 업데이트할 수 있게 해준다.
+
+따라서, 위의 예제 코드에서 `startTransition` 을 적용하게 된 이유는 다음과 같다.
+
+Suspense 컴포넌트의 fallback을 활용해 로딩 UI를 만들 수 있다. 그런데, 로딩 UI가 전체 UI 를 다 가리고 표현되면 사용자의 경험을 헤치게된다.
+UI를 변경하는 동작을 startTransiton으로 감싸준다면 이 동작은 기존 UI를 blocking하지 않기 때문에 사용자의 경험을 유지할 수 있다.
