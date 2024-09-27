@@ -1,0 +1,11 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.container:before {
+  content: "";
+  display: block;
+  padding-top: 150%;
+  background-color: rgb(230, 230, 230);
+}

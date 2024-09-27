@@ -1,8 +1,12 @@
 import MovieItem from "@/components/MovieItem";
+import MovieListSkeleton from "@/components/skeleton/MovieListSkeleton";
 import { MovieData } from "@/types";
+import delay from "@/utils/delay";
+import { Suspense } from "react";
 import style from "./page.module.css";
 
 async function AllMovies() {
+  await delay(1500);
   /**
    * 새로운 데이터가 추가되거나 삭제되지 않기 때문에 "force-cache" 로 설정.
    * 다만, 데이터의 추가/삭제 기능이 추가된다면, ISR 동작으로 변경되면 좋을 것 같다.
@@ -15,17 +19,11 @@ async function AllMovies() {
   if (!response.ok) return <div>오류가 발생했습니다...</div>;
 
   const allMovies: MovieData[] = await response.json();
-
-  return (
-    <div className={style.all_container}>
-      {allMovies.map((movie) => (
-        <MovieItem key={movie.id} {...movie} />
-      ))}
-    </div>
-  );
+  return allMovies.map((movie) => <MovieItem key={movie.id} {...movie} />);
 }
 
 async function RecommendMovies() {
+  await delay(3000);
   /**
    * 랜덤으로 제공되는 데이터이므로 특정 시간을 주기로 업데이트.
    */
@@ -37,13 +35,7 @@ async function RecommendMovies() {
   if (!response.ok) return <div>오류가 발생했습니다...</div>;
 
   const recommendBooks: MovieData[] = await response.json();
-  return (
-    <div className={style.reco_container}>
-      {recommendBooks.map((movie) => (
-        <MovieItem key={movie.id} {...movie} />
-      ))}
-    </div>
-  );
+  return recommendBooks.map((movie) => <MovieItem key={movie.id} {...movie} />);
 }
 
 export default function Home() {
@@ -51,11 +43,19 @@ export default function Home() {
     <div className={style.container}>
       <section>
         <h3>지금 가장 추천하는 영화</h3>
-        <RecommendMovies />
+        <div className={style.reco_container}>
+          <Suspense fallback={<MovieListSkeleton count={3} />}>
+            <RecommendMovies />
+          </Suspense>
+        </div>
       </section>
       <section>
         <h3>등록된 모든 영화</h3>
-        <AllMovies />
+        <div className={style.all_container}>
+          <Suspense fallback={<MovieListSkeleton count={10} />}>
+            <AllMovies />
+          </Suspense>
+        </div>
       </section>
     </div>
   );
