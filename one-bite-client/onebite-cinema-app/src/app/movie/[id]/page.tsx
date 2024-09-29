@@ -1,5 +1,7 @@
+import ReviewEditor from "@/components/ReviewEditor";
+import ReviewItem from "@/components/ReviewItem";
 import movies from "@/mock/movies.json";
-import { MovieData } from "@/types";
+import { MovieData, ReviewData } from "@/types";
 import { notFound } from "next/navigation";
 import style from "./page.module.css";
 
@@ -9,17 +11,13 @@ export function generateStaticParams() {
   return movies.map((movie) => ({ id: `${movie.id}` }));
 }
 
-export default async function Page({
-  params,
-}: {
-  params: { id: string | string[] };
-}) {
+async function MovieDetail({ movieId }: { movieId: string }) {
   /**
    * 데이터가 수정되지 않기 때문에 "force-cache" 로 설정.
    * 다만, 데이터의 수정 기능이 추가된다면, ISR 동작으로 변경되면 좋을 것 같다.
    */
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/${params.id}`,
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/${movieId}`,
     { cache: "force-cache" }
   );
 
@@ -41,7 +39,7 @@ export default async function Page({
     posterImgUrl,
   } = movieData;
   return (
-    <div className={style.container}>
+    <section>
       <div
         className={style.cover_img_container}
         style={{ backgroundImage: `url(${posterImgUrl})` }}
@@ -55,6 +53,34 @@ export default async function Page({
       <div className={style.company}>{company}</div>
       <div className={style.subTitle}>{subTitle}</div>
       <div className={style.description}>{description}</div>
+    </section>
+  );
+}
+
+async function ReviewList({ movieId }: { movieId: string }) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/review/movie/${movieId}`
+  );
+
+  if (!response.ok)
+    throw new Error(`Review fetch failed : ${response.statusText}`);
+
+  const reviews: ReviewData[] = await response.json();
+  return (
+    <section>
+      {reviews.map((review) => (
+        <ReviewItem key={`review-item-${review.id}`} {...review} />
+      ))}
+    </section>
+  );
+}
+
+export default async function Page({ params }: { params: { id: string } }) {
+  return (
+    <div className={style.container}>
+      <MovieDetail movieId={params.id} />
+      <ReviewEditor movieId={params.id} />
+      <ReviewList movieId={params.id} />
     </div>
   );
 }
