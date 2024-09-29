@@ -7,6 +7,11 @@
 - [05 Static site generation](./docs/05_static_site_generation.md)
 - [06 Incremental static regeneration](./docs/06_incremental_static_regeneration.md)
 - [07 What is app router](./docs/07_what_is_app_router.md)
+- [08 React server component](./docs/08_react_server_component.md)
+- [09 Data fetching with app router](./docs/09_data_fetching_with_app_router.md)
+- [10 Full route cache](./docs/10_full_route_cache.md)
+- [11 Streaming](./docs/11_streaming.md)
+- [12 Server actions](./docs/12_server_actions.md)
 
 ### Deploy onebite-books using page router with vercel
 
