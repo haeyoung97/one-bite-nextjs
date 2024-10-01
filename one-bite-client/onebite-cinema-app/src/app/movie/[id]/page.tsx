@@ -59,7 +59,8 @@ async function MovieDetail({ movieId }: { movieId: string }) {
 
 async function ReviewList({ movieId }: { movieId: string }) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/review/movie/${movieId}`
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/review/movie/${movieId}`,
+    { next: { tags: [`review-${movieId}`] } }
   );
 
   if (!response.ok)
