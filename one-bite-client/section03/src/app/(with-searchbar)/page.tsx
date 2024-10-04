@@ -2,6 +2,7 @@ import BookItem from "@/components/BookItem";
 import BookListSkeleton from "@/components/skeleton/BookListSkeleton";
 import { BookData } from "@/types";
 import { delay } from "@/utils/delay";
+import { Metadata } from "next";
 import { Suspense } from "react";
 import style from "./page.module.css";
 
@@ -43,6 +44,16 @@ async function RecommendBooks() {
 }
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "한입 북스",
+  description: "한입 북스에 등록된 도서를 만나보세요.",
+  openGraph: {
+    title: "한입 북스",
+    description: "한입 북스에 등록된 도서를 만나보세요.",
+    images: ["/thumbnail.png"],
+  },
+};
 export default function Home() {
   return (
     <div className={style.container}>
