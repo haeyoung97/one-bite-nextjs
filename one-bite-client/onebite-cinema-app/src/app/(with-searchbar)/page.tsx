@@ -1,12 +1,9 @@
 import MovieItem from "@/components/MovieItem";
-import MovieListSkeleton from "@/components/skeleton/MovieListSkeleton";
 import { MovieData } from "@/types";
-import delay from "@/utils/delay";
-import { Suspense } from "react";
+import { Metadata } from "next";
 import style from "./page.module.css";
 
 async function AllMovies() {
-  await delay(1500);
   /**
    * 새로운 데이터가 추가되거나 삭제되지 않기 때문에 "force-cache" 로 설정.
    * 다만, 데이터의 추가/삭제 기능이 추가된다면, ISR 동작으로 변경되면 좋을 것 같다.
@@ -23,7 +20,6 @@ async function AllMovies() {
 }
 
 async function RecommendMovies() {
-  await delay(3000);
   /**
    * 랜덤으로 제공되는 데이터이므로 특정 시간을 주기로 업데이트.
    */
@@ -38,23 +34,29 @@ async function RecommendMovies() {
   return recommendBooks.map((movie) => <MovieItem key={movie.id} {...movie} />);
 }
 
+export const metadata: Metadata = {
+  title: "한입 씨네마",
+  description: "한입 씨네마에 등록된 영화를 만나보세요.",
+  openGraph: {
+    title: "한입 씨네마",
+    description: "한입 씨네마에 등록된 영화를 만나보세요.",
+    images: ["/thumbnail.png"],
+  },
+};
+
 export default function Home() {
   return (
     <div className={style.container}>
       <section>
         <h3>지금 가장 추천하는 영화</h3>
         <div className={style.reco_container}>
-          <Suspense fallback={<MovieListSkeleton count={3} />}>
-            <RecommendMovies />
-          </Suspense>
+          <RecommendMovies />
         </div>
       </section>
       <section>
         <h3>등록된 모든 영화</h3>
         <div className={style.all_container}>
-          <Suspense fallback={<MovieListSkeleton count={10} />}>
-            <AllMovies />
-          </Suspense>
+          <AllMovies />
         </div>
       </section>
     </div>

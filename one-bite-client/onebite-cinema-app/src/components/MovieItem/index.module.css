@@ -1,6 +1,8 @@
 .container {
+  position: relative;
 }
 
 .container img {
+  position: relative !important;
   width: 100%;
 }

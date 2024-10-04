@@ -28,3 +28,8 @@
 
 - server: https://one-bite-server.vercel.app
 - client: https://onebite-books-app-navy.vercel.app
+
+### Deploy onebite-cinema using app router with vercel
+
+- server: https://onebite-cinema-api-xi.vercel.app
+- client: https://onebite-cinema-app-livid.vercel.app
