@@ -12,6 +12,7 @@
 - [10 Full route cache](./docs/10_full_route_cache.md)
 - [11 Streaming](./docs/11_streaming.md)
 - [12 Server actions](./docs/12_server_actions.md)
+- [13 Parallel and Intercepting route](./docs/13_parallel_and_intercepting_route.md)
 
 ### Deploy onebite-books using page router with vercel
 
@@ -22,3 +23,8 @@
 
 - server: https://onebite-cinema-api-xi.vercel.app
 - client: https://onebite-cinema-page-nine.vercel.app
+
+### Deploy onebite-books using app router with vercel
+
+- server: https://one-bite-server.vercel.app
+- client: https://onebite-books-app-navy.vercel.app

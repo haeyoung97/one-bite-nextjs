@@ -1,6 +1,5 @@
 "use server";
 
-import { delay } from "@/utils/delay";
 import { revalidateTag } from "next/cache";
 
 export async function createReviewAction(_: any, formData: FormData) {
@@ -12,7 +11,6 @@ export async function createReviewAction(_: any, formData: FormData) {
     return { status: false, error: "리뷰 내용과 작성자를 입력해주세요." };
 
   try {
-    await delay(1000);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_SERVER_URL}/review`,
       {

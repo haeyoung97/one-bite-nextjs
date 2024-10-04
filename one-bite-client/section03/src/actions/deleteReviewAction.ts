@@ -1,6 +1,5 @@
 "use server";
 
-import { delay } from "@/utils/delay";
 import { revalidateTag } from "next/cache";
 
 export async function deleteReviewAction(_: any, formData: FormData) {
@@ -11,7 +10,6 @@ export async function deleteReviewAction(_: any, formData: FormData) {
     return { status: false, error: "삭제할 리뷰가 없습니다." };
 
   try {
-    await delay(1000);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_SERVER_URL}/review/${reviewId}`,
       { method: "DELETE" }

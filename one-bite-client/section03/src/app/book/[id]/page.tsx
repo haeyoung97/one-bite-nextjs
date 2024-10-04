@@ -15,8 +15,14 @@ import style from "./page.module.css";
  * 빌드 타임에 미리 렌더링을 완료할 수 있으며, full route cache를 적용할 수 있다.
  * Page Router의 getStaticPaths 와 동일한 역할을 수행한다.
  */
-export function generateStaticParams() {
-  return [{ id: "1" }, { id: "2" }, { id: "3" }];
+export async function generateStaticParams() {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`
+  );
+
+  if (!response.ok) throw new Error(response.statusText);
+  const books: BookData[] = await response.json();
+  return books.map((book) => ({ id: `${book.id}` }));
 }
 
 async function BookDetail({ bookId }: { bookId: string }) {
