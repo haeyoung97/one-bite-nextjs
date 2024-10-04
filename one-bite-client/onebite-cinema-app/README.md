@@ -2,5 +2,5 @@
 
 ### Deploy onebite-cinema using app router with vercel
 
-- server:
-- client:
+- server: https://onebite-cinema-api-xi.vercel.app
+- client: https://onebite-cinema-app-livid.vercel.app

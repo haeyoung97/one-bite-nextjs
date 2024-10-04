@@ -1,7 +1,7 @@
 import { BookData } from "@/types";
 
 export default async function fetchBooks(q?: string): Promise<BookData[]> {
-  let url = `https://one-bite-server.vercel.app/book`;
+  let url = `https://onebite-books-api.vercel.app/book`;
 
   if (q) url += `/search?q=${q}`;
 

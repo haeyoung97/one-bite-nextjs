@@ -2,5 +2,5 @@
 
 ### Deploy onebite-books using page router with vercel
 
-- server: https://one-bite-server.vercel.app
+- server: https://onebite-books-api.vercel.app
 - client: https://onebite-books-page-nine.vercel.app
